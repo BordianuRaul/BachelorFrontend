@@ -1,0 +1,2 @@
+C:/Users/bordi/OneDrive/Desktop/New folder/Bachelor/frontend/android/app/.cxx/Debug/1614605e/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/bordi/OneDrive/Desktop/New folder/Bachelor/frontend/android/app/.cxx/Debug/1614605e/armeabi-v7a/CMakeFiles/rebuild_cache.dir
