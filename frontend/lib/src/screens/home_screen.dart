@@ -89,7 +89,51 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
             ),
             const SizedBox(height: 20),
-            buildJournalCard(context),
+            buildJournalCard(context), // Existing journal card widget
+
+            // New "Discovered a new habit?" vertical card with pale green tone
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                // Implement the action for the "Discovered a new habit?" card
+                print("Discovered a new habit clicked");
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFA8D5BA), // Pale, bright green color
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.lightbulb_outline, // Icon representing discovery or a new idea
+                      color: Colors.white,
+                      size: 36, // Slightly bigger icon for vertical alignment
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Discovered a new habit?',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

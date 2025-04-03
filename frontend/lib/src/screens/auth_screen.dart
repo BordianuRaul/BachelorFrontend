@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import '../widgets/blurred_background.dart';
+import '../widgets/blurred_background_auth.dart';
 import '../widgets/custom_text_field.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class AuthScreenState extends State<AuthScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          buildBlurredBackground(),
+          buildBlurredBackgroundAuth(),
           _buildTitleSection(),
           _buildLoginRegisterCard(loginProvider),
         ],

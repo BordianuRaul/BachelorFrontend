@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import '../models/habit.dart';
 import '../models/user.dart';
 import 'package:http/http.dart' as http;
 
@@ -67,5 +68,34 @@ class AuthService {
 
   String getUserFirstName() {
     return AuthService.user!.firstName;
+  }
+
+  String getUserId() {
+    return AuthService.user!.id;
+  }
+
+  Future<List<Habit>> getHabitsForUser() async {
+    if (AuthService.user == null) {
+      throw Exception('User is not logged in');
+    }
+
+    final userId = AuthService.user!.id;
+    final url = Uri.parse('$_baseUrl/getHabits?userId=$userId');
+
+    final response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response into Habit objects
+      final List<dynamic> habitsData = jsonDecode(response.body);
+      List<Habit> habits = habitsData.map((habitJson) => Habit.fromJson(habitJson)).toList();
+      return habits;
+    } else {
+      throw Exception('Failed to load habits');
+    }
   }
 }

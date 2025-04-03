@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../screens/select_habit_screen.dart';
+
 Widget buildJournalCard(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16.0), // Keeps spacing on sides
     child: InkWell(
       onTap: () {
-        //TO DO: Add navigation to journal screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const SelectHabitScreen()),
+        );
       },
       splashColor: Colors.transparent,
       child: Card(

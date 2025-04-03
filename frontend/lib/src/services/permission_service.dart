@@ -2,7 +2,7 @@ import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:usage_stats/usage_stats.dart'; // ✅ Correct Import
+import 'package:usage_stats/usage_stats.dart';
 
 class PermissionService {
   PermissionService._privateConstructor();

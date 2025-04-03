@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/services/permission_service.dart';
-import '../widgets/blurred_background.dart';
+import '../widgets/blurred_background_auth.dart';
 
 //USE POPUPS INSTEAD OF BASIC BUTTONS
 
@@ -50,7 +50,7 @@ class GrantAccessScreenState extends State<GrantAccessScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          buildBlurredBackground(),
+          buildBlurredBackgroundAuth(),
           _buildContent(),
         ],
       ),
