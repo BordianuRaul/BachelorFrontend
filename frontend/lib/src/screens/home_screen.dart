@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             GestureDetector(
               onTap: () {
                 // Implement the action for the "Discovered a new habit?" card
-                print("Discovered a new habit clicked");
+                print(" discovered a new habit clicked?");
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      'Discovered a new habit?',
+                      ' discovered a new habit?',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

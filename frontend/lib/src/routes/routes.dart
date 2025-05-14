@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/screens/journal_entry_screen.dart';
 import 'package:frontend/src/screens/select_habit_screen.dart';
 
+import '../screens/SplashScreen.dart';
 import '../screens/grant_access_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/auth_screen.dart';
@@ -11,6 +12,8 @@ class Routes {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => const AuthScreen());
+      case '/splash':
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case '/grantAccess':
         return MaterialPageRoute(builder: (_) => const GrantAccessScreen());
       case '/home':

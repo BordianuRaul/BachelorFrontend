@@ -1,6 +1,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import '../models/habit.dart';
 import '../models/user.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +10,8 @@ import 'package:http/http.dart' as http;
 class AuthService {
 
   static User? user;
+  static String? token;
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   AuthService._privateConstructor();
 
@@ -23,19 +27,16 @@ class AuthService {
   Future<void> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': email,
-        'password': password,
-      }),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode({'email': email, 'password': password}),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       AuthService.user = User.fromJson(data['user']);
+      AuthService.token = data['token'];
 
+      await secureStorage.write(key: 'jwt_token', value: data['token']);
     } else {
       throw Exception('Failed to login');
     }
@@ -44,10 +45,8 @@ class AuthService {
   Future<void> register(String firstName, String lastName, String email, String password) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode({
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
@@ -55,11 +54,69 @@ class AuthService {
       }),
     );
 
-    if (response.statusCode == 201) {
-      final String responseString = response.body;
-    } else {
+    if (response.statusCode != 201) {
       throw Exception('Failed to register');
     }
+  }
+
+  Future<List<Habit>> getHabitsForUser() async {
+    if (AuthService.token == null) {
+      throw Exception('User is not authenticated');
+    }
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/getHabits'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${AuthService.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> habitsData = jsonDecode(response.body);
+      return habitsData.map((json) => Habit.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load habits');
+    }
+  }
+
+  Future<bool> validateToken() async {
+    if (token == null) return false;
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/validateToken'),
+      headers: _authHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      user = User.fromJson(data['user']);
+      return true;
+    } else {
+      await logout(); // Clean up expired token
+      return false;
+    }
+  }
+
+  Future<bool> tryAutoLogin() async {
+    final storedToken = await secureStorage.read(key: 'jwt_token');
+    if (storedToken == null) return false;
+
+    token = storedToken;
+    return await validateToken();
+  }
+
+  Future<void> logout() async {
+    token = null;
+    user = null;
+    await secureStorage.delete(key: 'jwt_token');
+  }
+
+  Map<String, String> _authHeaders() {
+    return {
+      'Content-Type': 'application/json; charset=UTF-8',
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
   }
 
   bool isPasswordValid(String password) {
@@ -74,28 +131,4 @@ class AuthService {
     return AuthService.user!.id;
   }
 
-  Future<List<Habit>> getHabitsForUser() async {
-    if (AuthService.user == null) {
-      throw Exception('User is not logged in');
-    }
-
-    final userId = AuthService.user!.id;
-    final url = Uri.parse('$_baseUrl/getHabits?userId=$userId');
-
-    final response = await http.get(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      // Parse the JSON response into Habit objects
-      final List<dynamic> habitsData = jsonDecode(response.body);
-      List<Habit> habits = habitsData.map((habitJson) => Habit.fromJson(habitJson)).toList();
-      return habits;
-    } else {
-      throw Exception('Failed to load habits');
-    }
-  }
 }

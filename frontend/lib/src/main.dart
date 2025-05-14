@@ -4,6 +4,7 @@ import 'package:frontend/src/providers/home_provider.dart';
 import 'package:frontend/src/providers/journal_entry_provider.dart';
 import 'package:frontend/src/providers/select_habit_provider.dart';
 import 'package:frontend/src/routes/routes.dart';
+import 'package:frontend/src/screens/SplashScreen.dart';
 import 'package:frontend/src/screens/auth_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -27,10 +28,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/splash',
       onGenerateRoute: Routes.generateRoute,
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
     );
   }
 }
+
+
