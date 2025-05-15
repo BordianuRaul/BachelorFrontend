@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frontend/src/models/habit.dart';
 import 'package:frontend/src/providers/select_habit_provider.dart';
+import 'package:frontend/src/screens/habit_menu_screen.dart';
 import 'package:frontend/src/screens/journal_entry_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +62,7 @@ class SelectHabitState extends State<SelectHabitScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const JournalEntryScreen()),
+                    MaterialPageRoute(builder: (_) => const HabitMenuScreen()),
                   );
                 },
                 borderRadius: BorderRadius.circular(16),

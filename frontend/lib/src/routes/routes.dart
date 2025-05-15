@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/screens/add_habit_screen.dart';
+import 'package:frontend/src/screens/habit_menu_screen.dart';
 import 'package:frontend/src/screens/journal_entry_screen.dart';
 import 'package:frontend/src/screens/select_habit_screen.dart';
 
@@ -25,6 +26,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const JournalEntryScreen());
       case '/addHabit':
         return MaterialPageRoute(builder: (_) => const AddHabitScreen());
+      case '/habitMenu':
+        return MaterialPageRoute(builder: (_) => const HabitMenuScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

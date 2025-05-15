@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/providers/add_habit_provider.dart';
 import 'package:frontend/src/providers/auth_provider.dart';
+import 'package:frontend/src/providers/habit_menu_provider.dart';
 import 'package:frontend/src/providers/home_provider.dart';
 import 'package:frontend/src/providers/journal_entry_provider.dart';
 import 'package:frontend/src/providers/select_habit_provider.dart';
@@ -17,7 +18,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => JournalEntryProvider()),
         ChangeNotifierProvider(create: (_) => SelectHabitProvider()),
-        ChangeNotifierProvider(create: (_) => AddHabitProvider())
+        ChangeNotifierProvider(create: (_) => AddHabitProvider()),
+        ChangeNotifierProvider(create: (_) => HabitMenuProvider())
       ],
       child: const MyApp(),
     ),
