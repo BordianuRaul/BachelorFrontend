@@ -19,6 +19,8 @@ class HabitService {
   factory HabitService() => _instance;
 
   final String _baseUrl = 'http://10.0.2.2:8080/api/users';
+  //final String _baseUrl = 'http://192.168.1.219:8080/api/users'; // for physical devices
+
 
   Future<void> addHabit(String name) async {
     if (token == null) {

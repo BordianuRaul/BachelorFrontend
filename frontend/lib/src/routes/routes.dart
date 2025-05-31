@@ -3,6 +3,7 @@ import 'package:frontend/src/screens/add_habit_screen.dart';
 import 'package:frontend/src/screens/habit_menu_screen.dart';
 import 'package:frontend/src/screens/journal_entry_screen.dart';
 import 'package:frontend/src/screens/select_habit_screen.dart';
+import 'package:frontend/src/screens/srhi_form_screen.dart';
 
 import '../screens/splash_screen.dart';
 import '../screens/grant_access_screen.dart';
@@ -28,6 +29,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const AddHabitScreen());
       case '/habitMenu':
         return MaterialPageRoute(builder: (_) => const HabitMenuScreen());
+      case '/SRHIForm':
+        return MaterialPageRoute(builder: (_) => const SRHIScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

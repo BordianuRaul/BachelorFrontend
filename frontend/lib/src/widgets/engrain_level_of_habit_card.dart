@@ -8,7 +8,7 @@ Widget buildEngrainLevelOfHabitCard(BuildContext context) {
     child: InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: () {
-        Navigator.pushNamed(context, '/journalEntry');
+        Navigator.pushNamed(context, '/SRHIForm');
       },
       child: Container(
         padding: const EdgeInsets.all(20),

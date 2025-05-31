@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../providers/habit_menu_provider.dart';
 import '../widgets/add_journal_page_to_habit_card.dart';
 import '../widgets/engrain_level_of_habit_card.dart';
-import '../widgets/find_possible_habits_card.dart';
 import '../widgets/possible_triggers_card.dart';
 
 class HabitMenuScreen extends StatefulWidget {
