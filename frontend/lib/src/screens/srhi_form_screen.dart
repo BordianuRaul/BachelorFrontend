@@ -147,6 +147,7 @@ class _SRHIScreenState extends State<SRHIScreen> with SingleTickerProviderStateM
                         },
                       ),
                     );
+                    provider.resetAnswers();
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Submission failed: $e')),

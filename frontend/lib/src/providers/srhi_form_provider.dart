@@ -16,4 +16,11 @@ class SRHIProvider extends ChangeNotifier {
   List<int> getFinalAnswers() {
     return answers.map((e) => e ?? 0).toList(); // Defensive fallback
   }
+
+  void resetAnswers() {
+    for (int i = 0; i < answers.length; i++) {
+      answers[i] = null;
+    }
+    notifyListeners();
+  }
 }
