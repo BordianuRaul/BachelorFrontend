@@ -45,6 +45,12 @@ class GrantAccessScreenState extends State<GrantAccessScreen> {
     _checkPermissions();
   }
 
+  Future<void> _grantBackgroundLocationAccess() async {
+    await _permissionService.requestBackgroundLocationPermission();
+    _checkPermissions();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,6 +114,8 @@ class GrantAccessScreenState extends State<GrantAccessScreen> {
             _buildPermissionButton("Allow Location", _grantLocationAccess),
           if (missingPermissions.contains("Usage Access"))
             _buildPermissionButton("Allow App Usage", _grantUsageAccess),
+          if (missingPermissions.contains("Background Location"))
+            _buildPermissionButton("Allow Background Location", _grantBackgroundLocationAccess),
           const SizedBox(height: 20),
           _buildPermissionButton("Retry", _checkPermissions, isRetry: true),
         ],

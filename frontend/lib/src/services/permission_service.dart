@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,6 +20,12 @@ class PermissionService {
 
     if (!(await Permission.location.isGranted)) {
       missingPermissions.add('Location');
+    }
+
+    if (Platform.isAndroid && (await Permission.location.isGranted)) {
+      if (await Permission.locationAlways.isDenied) {
+        missingPermissions.add('Background Location');
+      }
     }
 
     bool hasUsageAccess = await isUsageAccessGranted() ?? false;
@@ -44,6 +52,12 @@ class PermissionService {
     );
     await intent.launch();
   }
+
+  Future<bool> requestBackgroundLocationPermission() async {
+    final status = await Permission.locationAlways.request();
+    return status.isGranted;
+  }
+
 
   Future<bool?> isUsageAccessGranted() async {
     try {
