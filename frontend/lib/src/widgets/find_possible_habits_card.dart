@@ -2,12 +2,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../services/app_usage_service.dart';
 Widget buildFindPossibleHabitsCard(BuildContext context) {
+
   return Material(
     color: Colors.transparent,
     child: InkWell(
       borderRadius: BorderRadius.circular(20),
-      onTap: () {
+      onTap: () async {
+        try {
+          AppUsageService().transferAppUsageInfo();
+          debugPrint("App usage transfer complete.");
+        } catch (e) {
+          debugPrint("Error transferring app usage: $e");
+        }
         Navigator.pushNamed(context, '/selectHabit');
       },
       child: Container(

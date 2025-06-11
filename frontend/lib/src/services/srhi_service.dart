@@ -12,8 +12,8 @@ class SRHIService {
 
   factory SRHIService() => _instance;
 
-  final String _baseUrl = 'http://10.0.2.2:8080/api/SRHI';
-  //final String _baseUrl = 'http://192.168.1.219:8080/api/SRHI'; // for physical devices
+  //final String _baseUrl = 'http://10.0.2.2:8080/api/SRHI';
+  final String _baseUrl = 'http://192.168.1.219:8080/api/SRHI'; // for physical devices
 
 
   Future<String> submitSRHI(List<int> answers) async {
@@ -33,7 +33,7 @@ class SRHIService {
     );
 
     if (response.statusCode == 200) {
-      // Assuming backend returns a plain text or json string message
+
       return response.body;
     } else {
       throw Exception('Failed to submit SRHI form: ${response.body}');
