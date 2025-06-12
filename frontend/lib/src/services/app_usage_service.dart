@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:collection/collection.dart';
+import 'package:flutter/services.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
-import 'package:usage_stats/usage_stats.dart';
 import 'package:frontend/src/models/application_daily_usage.dart';
 import 'auth_service.dart';
 import 'package:http/http.dart' as http;
@@ -84,7 +84,11 @@ class AppUsageService {
     DateTime finalDate = DateTime(end.year, end.month, end.day);
 
     while (!current.isAfter(finalDate)) {
-      List<ApplicationDailyUsage> dailyUsage = await _getApplicationsDailyUsageForDay(current);
+      // Compute start and end millis for this day (full day range)
+      final dayStart = current;
+      final dayEnd = current.add(const Duration(days: 1)).subtract(const Duration(milliseconds: 1));
+
+      List<ApplicationDailyUsage> dailyUsage = await _getApplicationsDailyUsageForDay(dayStart, dayEnd);
 
       combinedUsage.addAll(dailyUsage);
 
@@ -94,67 +98,61 @@ class AppUsageService {
     return combinedUsage;
   }
 
+  Future<List<ApplicationDailyUsage>> _getApplicationsDailyUsageForDay(
+      DateTime start, DateTime end) async {
+    const platform = MethodChannel('app_usage_channel');
 
-  Future<List<ApplicationDailyUsage>> _getApplicationsDailyUsageForDay(DateTime day) async {
-    final start = DateTime(day.year, day.month, day.day);
-    final end = start.add(const Duration(days: 1));
+    // Call the native Android method
+    final Map<String, dynamic> nativeUsageMap = Map<String, dynamic>.from(
+      await platform.invokeMethod('getHourlyAppUsage', {
+        'start': start.millisecondsSinceEpoch,
+        'end': end.millisecondsSinceEpoch,
+      }),
+    );
 
-    // Query usage stats
-    List<UsageInfo> usageStats = await UsageStats.queryUsageStats(start, end);
-
-    // Fetch installed apps once with icons and system apps
+    // Get list of installed apps to resolve package names
     List<AppInfo> installedApps = await InstalledApps.getInstalledApps(true, true);
 
-    Map<String, ApplicationDailyUsage> appUsageMap = {};
+    List<ApplicationDailyUsage> results = [];
 
-    for (var info in usageStats) {
-      final package = info.packageName;
-      final totalTimeObj = info.totalTimeInForeground;
-      final firstTimeStampObj = info.firstTimeStamp;
-      final lastTimeUsedObj = info.lastTimeUsed;
+    // Iterate through each app's usage data
+    for (final appEntry in nativeUsageMap.entries) {
+      final packageName = appEntry.key;
+      final dayUsageMap = Map<String, dynamic>.from(appEntry.value);
 
+      final app = installedApps.firstWhereOrNull(
+            (a) => a.packageName == packageName,
+      );
+      if (app == null) continue;
 
-      if (package == null || totalTimeObj == null || firstTimeStampObj == null || lastTimeUsedObj == null) {
-        continue;
-      }
+      final category = _getCategoryFromAppName(app.name);
 
-      AppInfo? app = installedApps.firstWhereOrNull((a) => a.packageName == package);
-      if (app == null) {
-        continue;
-      }
+      // Each day in the date range
+      for (final dayEntry in dayUsageMap.entries) {
+        final dateStr = dayEntry.key;
+        final usageList = List<int>.from(dayEntry.value); // Should contain 24 elements
 
-      final appName = app.name;
-      final category = _getCategoryFromAppName(appName);
+        // Parse the date from "yyyy-MM-dd"
+        final dateParts = dateStr.split("-");
+        if (dateParts.length != 3) continue; // Skip malformed entries
 
-      final int? totalTime = int.tryParse(totalTimeObj);
-      final int? firstTimeMillis = int.tryParse(firstTimeStampObj);
-      final int? lastTimeMillis = int.tryParse(lastTimeUsedObj);
-
-      if (totalTime == null || firstTimeMillis == null || lastTimeMillis == null) {
-        continue;
-      }
-
-      final DateTime firstTimeStamp = DateTime.fromMillisecondsSinceEpoch(firstTimeMillis);
-      final DateTime lastTimeUsed = DateTime.fromMillisecondsSinceEpoch(lastTimeMillis);
-
-      final int estimatedHour = ((firstTimeStamp.hour + lastTimeUsed.hour) / 2).floor();
-
-      final int totalTimeInSeconds = totalTime ~/ 1000;
-
-      if (!appUsageMap.containsKey(package)) {
-        appUsageMap[package] = ApplicationDailyUsage(
-          name: appName,
-          packageName: package,
-          category: category,
-          date: day,
-          hourlyUsageInSeconds: List.filled(24, 0),
+        final date = DateTime(
+          int.parse(dateParts[0]),
+          int.parse(dateParts[1]),
+          int.parse(dateParts[2]),
         );
-      }
 
-      appUsageMap[package]!.hourlyUsageInSeconds[estimatedHour] += totalTimeInSeconds;
+        results.add(ApplicationDailyUsage(
+          name: app.name,
+          packageName: packageName,
+          category: category,
+          date: date,
+          hourlyUsageInSeconds: usageList,
+        ));
+      }
     }
 
-    return appUsageMap.values.toList();
+    return results;
   }
 
   //this can be refined by categorising in backend, but for now it's not so impactfull
