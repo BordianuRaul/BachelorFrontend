@@ -17,8 +17,8 @@ class AppUsageService {
     return _instance;
   }
 
-  //final String _baseUrl = 'http://10.0.2.2:8080/api/appUsage';
-  final String _baseUrl = 'http://192.168.1.219:8080/api/appUsage'; // for physical devices
+  final String _baseUrl = 'http://10.0.2.2:8080/api/appUsage';
+  //final String _baseUrl = 'http://192.168.1.219:8080/api/appUsage'; // for physical devices
 
   Future<void> transferAppUsageInfo() async {
     if (token == null) {
@@ -44,8 +44,31 @@ class AppUsageService {
       body: jsonPayload,
     );
 
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 && response.statusCode != 202) {
       throw Exception('Failed to send app usage data: ${response.statusCode} ${response.body}');
+    }
+  }
+
+  Future<List<String>> fetchPossibleHabits() async {
+    if (token == null) {
+      throw Exception('Token not found. User might not be logged in.');
+    }
+
+    final url = Uri.parse('$_baseUrl/findPossibleHabits');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonList = jsonDecode(response.body);
+      return jsonList.map((e) => e.toString()).toList();
+    } else {
+      throw Exception('Failed to fetch possible habits: ${response.statusCode} ${response.body}');
     }
   }
 

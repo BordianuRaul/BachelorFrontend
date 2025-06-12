@@ -12,8 +12,8 @@ class SRHIService {
 
   factory SRHIService() => _instance;
 
-  //final String _baseUrl = 'http://10.0.2.2:8080/api/SRHI';
-  final String _baseUrl = 'http://192.168.1.219:8080/api/SRHI'; // for physical devices
+  final String _baseUrl = 'http://10.0.2.2:8080/api/SRHI';
+  //final String _baseUrl = 'http://192.168.1.219:8080/api/SRHI'; // for physical devices
 
 
   Future<String> submitSRHI(List<int> answers) async {

@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/src/screens/journal_entry_screen.dart';
 
@@ -21,8 +23,8 @@ Widget habitCard(BuildContext context, {required String habit, required Color ba
       },
       borderRadius: BorderRadius.circular(10),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
+        padding: EdgeInsets.fromLTRB(16, (16 + Random().nextInt(10)) as double, 16, 16),
+      child: Row(
           children: [
             Icon(
               Icons.check_circle_outline,

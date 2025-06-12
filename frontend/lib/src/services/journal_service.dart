@@ -19,6 +19,6 @@ class JournalService {
     return _instance;
   }
 
-  //final String _baseUrl = 'http://10.0.2.2:8080/api/journal';
-  final String _baseUrl = 'http://192.168.1.219:8080/api/journal'; // for physical devices
+  final String _baseUrl = 'http://10.0.2.2:8080/api/journal';
+  //final String _baseUrl = 'http://192.168.1.219:8080/api/journal'; // for physical devices
 }

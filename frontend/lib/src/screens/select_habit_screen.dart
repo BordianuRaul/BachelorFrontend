@@ -4,7 +4,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frontend/src/models/habit.dart';
 import 'package:frontend/src/providers/select_habit_provider.dart';
 import 'package:frontend/src/screens/habit_menu_screen.dart';
-import 'package:frontend/src/screens/journal_entry_screen.dart';
 import 'package:provider/provider.dart';
 
 class SelectHabitScreen extends StatefulWidget {
@@ -42,70 +41,87 @@ class SelectHabitState extends State<SelectHabitScreen> {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: habits.isEmpty
             ? const Center(child: CircularProgressIndicator())
-            : StaggeredGrid.count(
-          crossAxisCount: 4,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          children: List.generate(habits.length, (index) {
-            final habit = habits[index];
-            final color = getRandomColor();
-            final tileSize = getRandomTileSize();
-            final textColor = Colors.black54;
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const _HeaderSection(),
+            const SizedBox(height: 24),
+            Expanded(
+              child: StaggeredGrid.count(
+                crossAxisCount: 4,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                children: List.generate(habits.length, (index) {
+                  final habit = habits[index];
+                  final color = getRandomColor();
+                  final tileSize = getTileSizeForText(habit.getName());
+                  final textColor = Colors.black87;
 
-            return StaggeredGridTile.count(
-              crossAxisCellCount: tileSize['w']!,
-              mainAxisCellCount: tileSize['h']!,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const HabitMenuScreen()),
-                  );
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        habit.getName(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                  return StaggeredGridTile.count(
+                    crossAxisCellCount: tileSize['w']!,
+                    mainAxisCellCount: tileSize['h']!,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HabitMenuScreen(),
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: Center(
+                          child: Text(
+                            habit.getName(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                }),
               ),
-            );
-          }),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  /// Gives a random tile size from a few Metro-style options
-  Map<String, int> getRandomTileSize() {
-    List<Map<String, int>> sizes = [
-      {'w': 2, 'h': 2}, // Square
-      {'w': 2, 'h': 1}, // Wide
-      {'w': 1, 'h': 2}, // Tall
-      {'w': 1, 'h': 1}, // Small
-    ];
-    return sizes[Random().nextInt(sizes.length)];
+  /// Calculates tile size based on text length
+  Map<String, int> getTileSizeForText(String text) {
+    final random = Random();
+    int width;
+    int height;
+
+    if (text.length > 40) {
+      width = 4;
+      height = 2 + random.nextInt(2); // 2–3
+    } else if (text.length > 20) {
+      width = 3;
+      height = 1 + random.nextInt(2); // 1–2
+    } else {
+      width = 2;
+      height = 1 + random.nextInt(2); // 1–2
+    }
+
+    return {'w': width, 'h': height};
   }
+
 
   Color getRandomColor() {
     List<Color> colors = [
@@ -129,5 +145,70 @@ class SelectHabitState extends State<SelectHabitScreen> {
     ];
     return colors[Random().nextInt(colors.length)];
   }
+}
 
+class _HeaderSection extends StatefulWidget {
+  const _HeaderSection();
+
+  @override
+  State<_HeaderSection> createState() => _HeaderSectionState();
+}
+
+class _HeaderSectionState extends State<_HeaderSection> with SingleTickerProviderStateMixin {
+  double _dividerWidth = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) {
+        setState(() => _dividerWidth = 1.0);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Row(
+          children: [
+            const CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage('assets/images/rick.jpg'), // change as needed
+            ),
+            const SizedBox(width: 12),
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ready to reflect?',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                Text(
+                  'pick a habit to journal',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
+        Center(
+          child: TweenAnimationBuilder<double>(
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOut,
+            tween: Tween<double>(begin: 0, end: _dividerWidth),
+            builder: (context, value, child) {
+              return Container(
+                height: 2.5,
+                width: MediaQuery.of(context).size.width * value,
+                color: Colors.black,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }

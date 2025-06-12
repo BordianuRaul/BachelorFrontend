@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/src/providers/add_habit_provider.dart';
-import '../widgets/blurred_background_journal_entry.dart'; // Or create a new one if needed
+import '../widgets/blurred_background_journal_entry.dart';
+import '../widgets/custom_text_field.dart';
 
 class AddHabitScreen extends StatefulWidget {
   const AddHabitScreen({super.key});
@@ -11,6 +12,14 @@ class AddHabitScreen extends StatefulWidget {
 }
 
 class _AddHabitScreenState extends State<AddHabitScreen> {
+  final FocusNode _habitNameFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _habitNameFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final habitProvider = Provider.of<AddHabitProvider>(context);
@@ -82,10 +91,20 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildTextField(
+                  customTextField(
                     'Enter a habit name (e.g. Reading, Meditation)',
+                    Icons.edit,
                     habitProvider.habitNameController,
+                    _habitNameFocusNode,
                   ),
+                  if (habitProvider.errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        habitProvider.errorMessage!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
                   const SizedBox(height: 20),
                   _buildSaveButton(habitProvider),
                 ],
@@ -93,23 +112,6 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildTextField(String hint, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: const TextStyle(color: Colors.black87),
-        fillColor: Colors.white,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
       ),
     );
   }
@@ -124,10 +126,6 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             const SnackBar(content: Text('Habit added successfully!')),
           );
           Navigator.pushNamed(context, '/home');
-        } else if (habitProvider.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(habitProvider.errorMessage!)),
-          );
         }
       },
       style: ElevatedButton.styleFrom(

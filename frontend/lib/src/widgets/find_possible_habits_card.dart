@@ -1,50 +1,52 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../services/app_usage_service.dart';
 Widget buildFindPossibleHabitsCard(BuildContext context) {
-
-  return Material(
-    color: Colors.transparent,
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0), // Match journal & add habit card padding
     child: InkWell(
-      borderRadius: BorderRadius.circular(20),
       onTap: () async {
         Navigator.pushNamed(context, '/exploreHabits');
       },
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF8C8DC), // Pale pink tone
-            borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.travel_explore,
-              color: Colors.white,
-              size: 36,
-            ),
-            SizedBox(height: 12),
-            Text(
-              'explore possible habits',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: 1.2,
+      splashColor: Colors.transparent,
+      child: Card(
+        color: const Color(0xFFF8C8DC), // Pale pink tone
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 2,
+        child: const Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: const [
+                  Icon(Icons.travel_explore, size: 50, color: Colors.black),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'explore possible habits',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              SizedBox(height: 12),
+              const Text(
+                '',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Roboto',
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ),

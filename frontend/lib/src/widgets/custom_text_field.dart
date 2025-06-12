@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget buildTextField(String label, IconData icon, TextEditingController controller, FocusNode focusNode, {bool obscureText = false}) {
+Widget customTextField(String label, IconData icon, TextEditingController controller, FocusNode focusNode, {bool obscureText = false}) {
   return TextField(
     controller: controller,
     focusNode: focusNode,

@@ -12,20 +12,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  double _dividerWidth = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    // Start animation when the page is loaded
-    Future.delayed(const Duration(milliseconds: 300), () {
-      setState(() {
-        _dividerWidth = 1.0; // Expands to full width
-      });
-    });
-  }
-
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
@@ -37,70 +24,90 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: const [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
-            ),
-          ],
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 30, // Profile Picture Size
-                  backgroundImage: const AssetImage('assets/images/rick.jpg'),
-                  backgroundColor: Colors.grey[300],
-                ),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'morning,',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                    Text(
-                      userFirstName,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Center(
-              child: TweenAnimationBuilder<double>(
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.easeInOut,
-                tween: Tween<double>(begin: 0, end: _dividerWidth),
-                builder: (context, value, child) {
-                  return Container(
-                    height: 2.5,
-                    width: MediaQuery.of(context).size.width * value,
-                    color: Colors.black,
-                  );
-                },
-              ),
-            ),
+            const SizedBox(height: 24),
+            _HeaderSection(userFirstName: userFirstName),
             const SizedBox(height: 20),
             buildJournalCard(context),
-
             const SizedBox(height: 20),
             buildAddHabitCard(context),
-
             const SizedBox(height: 20),
             buildFindPossibleHabitsCard(context),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _HeaderSection extends StatefulWidget {
+  final String userFirstName;
+  const _HeaderSection({required this.userFirstName});
+
+  @override
+  State<_HeaderSection> createState() => _HeaderSectionState();
+}
+
+class _HeaderSectionState extends State<_HeaderSection> with SingleTickerProviderStateMixin {
+  double _dividerWidth = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) {
+        setState(() => _dividerWidth = 1.0);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            const CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage('assets/images/rick.jpg'),
+              backgroundColor: Colors.grey,
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'morning,',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                Text(
+                  widget.userFirstName,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
+        Center(
+          child: TweenAnimationBuilder<double>(
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOut,
+            tween: Tween<double>(begin: 0, end: _dividerWidth),
+            builder: (context, value, child) {
+              return Container(
+                height: 2.5,
+                width: MediaQuery.of(context).size.width * value,
+                color: Colors.black,
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
