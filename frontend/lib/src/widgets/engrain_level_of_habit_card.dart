@@ -29,7 +29,7 @@ Widget buildEngrainLevelOfHabitCard(BuildContext context) {
           children: [
             Icon(
               Icons.search_rounded,
-              color: Colors.white,
+              color: Colors.black,
               size: 36,
             ),
             SizedBox(height: 12),
@@ -38,7 +38,7 @@ Widget buildEngrainLevelOfHabitCard(BuildContext context) {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.black,
                 letterSpacing: 1.2,
               ),
             ),

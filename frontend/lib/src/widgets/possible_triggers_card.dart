@@ -8,7 +8,7 @@ Widget buildPossibleTriggersCard(BuildContext context) {
     child: InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: () {
-        Navigator.pushNamed(context, '/journalEntry');
+        Navigator.pushNamed(context, '/exploreHabits');
       },
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -29,7 +29,7 @@ Widget buildPossibleTriggersCard(BuildContext context) {
           children: [
             Icon(
               Icons.psychology_outlined,
-              color: Colors.white,
+              color: Colors.black,
               size: 36,
             ),
             SizedBox(height: 12),
@@ -38,7 +38,7 @@ Widget buildPossibleTriggersCard(BuildContext context) {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.black,
                 letterSpacing: 1.2,
               ),
             ),
