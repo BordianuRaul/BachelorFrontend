@@ -10,13 +10,7 @@ Widget buildFindPossibleHabitsCard(BuildContext context) {
     child: InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: () async {
-        try {
-          AppUsageService().transferAppUsageInfo();
-          debugPrint("App usage transfer complete.");
-        } catch (e) {
-          debugPrint("Error transferring app usage: $e");
-        }
-        Navigator.pushNamed(context, '/selectHabit');
+        Navigator.pushNamed(context, '/exploreHabits');
       },
       child: Container(
         padding: const EdgeInsets.all(20),
