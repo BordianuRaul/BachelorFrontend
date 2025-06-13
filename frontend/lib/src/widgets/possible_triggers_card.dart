@@ -7,7 +7,7 @@ Widget buildPossibleTriggersCard(BuildContext context) {
     child: InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: () {
-        Navigator.pushNamed(context, '/exploreHabits');
+        Navigator.pushNamed(context, '/exploreTriggers');
       },
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -33,7 +33,7 @@ Widget buildPossibleTriggersCard(BuildContext context) {
             ),
             SizedBox(height: 12),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0), // Optional: add a little padding for breathing room
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 'Explore possible triggers for this habit',
                 style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/screens/add_habit_screen.dart';
 import 'package:frontend/src/screens/explore_possible_habits_screen.dart';
+import 'package:frontend/src/screens/explore_possible_triggers_screen.dart';
 import 'package:frontend/src/screens/habit_menu_screen.dart';
 import 'package:frontend/src/screens/journal_entry_screen.dart';
 import 'package:frontend/src/screens/select_habit_screen.dart';
@@ -34,6 +35,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const SRHIScreen());
       case '/exploreHabits':
         return MaterialPageRoute(builder: (_) => const ExplorePossibleHabitsScreen());
+      case '/exploreTriggers':
+        return MaterialPageRoute(builder: (_) => const ExplorePossibleTriggersScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
