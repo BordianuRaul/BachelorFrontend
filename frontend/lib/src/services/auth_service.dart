@@ -21,8 +21,8 @@ class AuthService {
     return _instance;
   }
 
-  final String _baseUrl = 'http://10.0.2.2:8080/api/users';
-  //final String _baseUrl = 'http://192.168.1.219:8080/api/users'; // for physical devices
+  //final String _baseUrl = 'http://10.0.2.2:8080/api/users';
+  final String _baseUrl = 'http://192.168.1.219:8080/api/users'; // for physical devices
 
   Future<void> login(String email, String password) async {
     final response = await http.post(

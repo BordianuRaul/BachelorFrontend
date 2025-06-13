@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/srhi_form_provider.dart';
 import '../services/srhi_service.dart';
+import '../widgets/srhi_instruction_dialog.dart';
 import '../widgets/srhi_result_dialog.dart';
 
 class SRHIScreen extends StatefulWidget {
@@ -43,10 +44,22 @@ class _SRHIScreenState extends State<SRHIScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
+
+    // Start divider animation after a small delay
     Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         _dividerWidth = 1.0;
       });
+    });
+
+    // Show SRHI instructions dialog on first frame render
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (context) => SRHIInstructionDialog(
+          onClose: () => Navigator.of(context).pop(),
+        ),
+      );
     });
   }
 
@@ -109,14 +122,6 @@ class _SRHIScreenState extends State<SRHIScreen> with SingleTickerProviderStateM
             ),
 
             const SizedBox(height: 25),
-
-            const Text(
-              'Please complete the form below. Select how much you agree with each statement using the scale from Strongly Disagree (Red) to Strongly Agree (Green).',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-
-
-            const SizedBox(height: 15),
 
             // Questions list
             Expanded(

@@ -2,42 +2,35 @@ import 'package:flutter/material.dart';
 
 Widget buildAddHabitCard(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0), // Match journal card padding
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
     child: InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/addHabit');
       },
       splashColor: Colors.transparent,
       child: Card(
-        color: const Color(0xFFA8D5BA), // Pale green tone, same as before
+        color: const Color(0xFFA8D5BA),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
         child: const Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0), // Match journal card padding
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min, // Prevent excessive expansion
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: const [
-                  Icon(Icons.lightbulb_outline, size: 50, color: Colors.black),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'discovered a new habit?',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,  // Black text here
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              Icon(Icons.lightbulb_outline, size: 50, color: Colors.black),
+              SizedBox(height: 12),
+              Text(
+                'discovered a new habit?',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-              const SizedBox(height: 12),
-              const Text(
+              SizedBox(height: 12),
+              Text(
                 '',
                 style: TextStyle(
                   fontSize: 16,

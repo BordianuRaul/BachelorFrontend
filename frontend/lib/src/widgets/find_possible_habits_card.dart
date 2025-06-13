@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget buildFindPossibleHabitsCard(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0), // Match journal & add habit card padding
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
     child: InkWell(
       onTap: () async {
         Navigator.pushNamed(context, '/exploreHabits');
@@ -13,13 +13,14 @@ Widget buildFindPossibleHabitsCard(BuildContext context) {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
         child: const Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children: const [
+                crossAxisAlignment: CrossAxisAlignment.start, // Align icon and text at the top
+                children: [
                   Icon(Icons.travel_explore, size: 50, color: Colors.black),
                   SizedBox(width: 12),
                   Expanded(
@@ -31,14 +32,15 @@ Widget buildFindPossibleHabitsCard(BuildContext context) {
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
-                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      overflow: TextOverflow.visible, // Allow full wrap
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 12),
-              const Text(
-                '',
+              Text(
+                '', // Optional subtitle
                 style: TextStyle(
                   fontSize: 16,
                   fontFamily: 'Roboto',

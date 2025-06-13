@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
 import '../screens/select_habit_screen.dart';
 
 Widget buildJournalCard(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0), // Keeps spacing on sides
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
     child: InkWell(
       onTap: () {
         Navigator.push(
@@ -14,46 +13,48 @@ Widget buildJournalCard(BuildContext context) {
       },
       splashColor: Colors.transparent,
       child: Card(
-        color: const Color(0xffddedec), // Light greenish background
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), // Rounded corners
+        color: const Color(0xffddedec),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
         child: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0), // Increased vertical padding
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min, // Prevent excessive expansion
-            crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(Icons.auto_stories_outlined, size: 50, color: Colors.black),
                   SizedBox(width: 12),
-                  Expanded( // Makes text responsive to screen width
+                  Expanded(
                     child: Text(
                       ' journal?',
                       style: TextStyle(
-                        fontSize: 25, // Bigger text
-                        fontFamily: 'Roboto', // Roboto font applied
-                        fontWeight: FontWeight.bold, // Make it stand out
+                        fontSize: 25,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                      overflow: TextOverflow.ellipsis, // Prevents overflow
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 12), // Extra space below the row
+              SizedBox(height: 12),
               Text(
-                '', // Additional text for better UX
+                '',
                 style: TextStyle(
                   fontSize: 16,
-                  fontFamily: 'Roboto', // Roboto applied
-                  color: Colors.black54, // Softer text color
+                  fontFamily: 'Roboto',
+                  color: Colors.black54,
                 ),
               ),
             ],
           ),
         ),
       ),
-    )
-
+    ),
   );
 }
