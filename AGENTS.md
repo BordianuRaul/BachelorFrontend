@@ -138,10 +138,12 @@ Measurement caveats to keep in mind (all relevant to the dissertation's data-qua
 
 ## Specs (OpenSpec)
 
-Bigger tasks are spec-driven. Each one is an OpenSpec change in `openspec/changes/`, archived to
+Tasks in SDD mode (criteria in the workspace `../AGENTS.md`: anything a user sees, contracts, design choices,
+not just size) are spec-driven. Each one is an OpenSpec change in `openspec/changes/`, archived to
 `openspec/changes/archive/` with its delta merged into `openspec/specs/` before the PR opens. **`openspec/specs/`
-is the current contract** for the behaviour it covers: read it before you change that behaviour. API contracts
-are specified in the backend repo's `openspec/`. Project constraints are in `openspec/config.yaml`. The
+is the current contract** for the behaviour it covers: read it before you change that behaviour. API contract
+changes are specified in the backend repo's `openspec/`; until an endpoint is specified there, the table in
+`../Bachelor/AGENTS.md` is the reference. Project constraints are in `openspec/config.yaml`. The
 workflow is in the workspace `../AGENTS.md`.
 
 ## Conventions when changing code

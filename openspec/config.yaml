@@ -3,9 +3,12 @@ schema: spec-driven
 # Constraints an agent can't read from the code. Workflow rules: HabbitFinder2.0/AGENTS.md (workspace).
 context: |
   HabitFinder 2.0 mobile client (Flutter, Android first; native sensing on Android), part of Raul Bordianu's
-  master's dissertation (UBB Cluj). The backend is BordianuRaul/Bachelor; its openspec/ owns API contracts.
-  Raul reviews and merges every PR. One HF task = one PR of at most 200 code lines
-  (tests and openspec/ excluded).
+  master's dissertation (UBB Cluj). The backend is BordianuRaul/Bachelor. API contract changes are specified
+  in the backend's openspec/ and this repo's change links to them; endpoints not yet specified there are
+  described in ../Bachelor/AGENTS.md.
+  One HF task = one PR within the code budget in the workspace AGENTS.md ("PR size").
+  The native usage logic (MainActivity) has no test harness: extract pure logic (bucketing, sessionization)
+  into code a test can reach; anything that needs real UsageEvents or a device is verified manually.
   Usage and location data quality is part of the dissertation's evaluation: measurement behaviour
   (session boundaries, time zones, dropped events) must be specified, not left implicit.
 
@@ -16,9 +19,9 @@ rules:
     - Always state what is out of scope
     - A change that depends on a backend contract links the backend change or PR
   specs:
-    - Every requirement has at least one scenario a test can check
+    - Every requirement has at least one scenario; each scenario is covered by a test or marked "(manual: <reason>)"
   design:
     - Name at least one rejected alternative and why it lost
   tasks:
-    - The whole tasks.md must fit one PR within the 200-line code budget; if it can't, split the HF task first
+    - The whole tasks.md must fit one PR within the code budget; if it can't, stop and propose a split to Raul
     - Every spec scenario maps to a test task, or says why it is verified manually (e.g. needs a device)
