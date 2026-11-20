@@ -1,0 +1,24 @@
+schema: spec-driven
+
+# Constraints an agent can't read from the code. Workflow rules: HabbitFinder2.0/AGENTS.md (workspace).
+context: |
+  HabitFinder 2.0 mobile client (Flutter, Android first; native sensing on Android), part of Raul Bordianu's
+  master's dissertation (UBB Cluj). The backend is BordianuRaul/Bachelor; its openspec/ owns API contracts.
+  Raul reviews and merges every PR. One HF task = one PR of at most 200 code lines
+  (tests and openspec/ excluded).
+  Usage and location data quality is part of the dissertation's evaluation: measurement behaviour
+  (session boundaries, time zones, dropped events) must be specified, not left implicit.
+
+rules:
+  proposal:
+    - 'Title starts with the HF task ID, e.g. "HF-11: Configure the API base URL at build time"'
+    - Keep it under one page
+    - Always state what is out of scope
+    - A change that depends on a backend contract links the backend change or PR
+  specs:
+    - Every requirement has at least one scenario a test can check
+  design:
+    - Name at least one rejected alternative and why it lost
+  tasks:
+    - The whole tasks.md must fit one PR within the 200-line code budget; if it can't, split the HF task first
+    - Every spec scenario maps to a test task, or says why it is verified manually (e.g. needs a device)

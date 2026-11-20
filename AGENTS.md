@@ -136,6 +136,14 @@ Measurement caveats to keep in mind (all relevant to the dissertation's data-qua
 - `PermissionService.openLocationSettings` passes an Android settings action to `launchUrl`, which doesn't
   work. Use `AndroidIntent`, as `requestUsageAccess` does.
 
+## Specs (OpenSpec)
+
+Bigger tasks are spec-driven. Each one is an OpenSpec change in `openspec/changes/`, archived to
+`openspec/changes/archive/` with its delta merged into `openspec/specs/` before the PR opens. **`openspec/specs/`
+is the current contract** for the behaviour it covers: read it before you change that behaviour. API contracts
+are specified in the backend repo's `openspec/`. Project constraints are in `openspec/config.yaml`. The
+workflow is in the workspace `../AGENTS.md`.
+
 ## Conventions when changing code
 
 - New feature = route in `routes.dart` + screen in `screens/` + provider in `providers/` (register it in
