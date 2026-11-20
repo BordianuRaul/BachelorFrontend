@@ -85,18 +85,18 @@ to `src/main/AndroidManifest.xml` before any release build.
 ## The usage pipeline (the part the thesis is about)
 
 `ExplorePossibleHabitsScreen` / `ExplorePossibleTriggersScreen` run `AppUsageService().transferAppUsageInfo()` in
-`initState`, so **every time either screen opens** it does a full re-sync (steps 1–5), then the screen itself
-calls step 6:
+`initState`, so **every time either screen opens** it does a full re-sync (steps 1–5 and the `PUT` in step 6).
+The screen itself then makes the `GET` in step 6:
 1. `GET /api/appUsage/lastUpdate` returns the date D (the newest stored date, or today−7).
 2. For each day from D to today (inclusive), call `getHourlyAppUsage(start, end)` over the MethodChannel.
 3. **Native side** (`MainActivity.getDailyHourlyAppUsage`): walk `UsageEvents`, pair
    `ACTIVITY_RESUMED/MOVE_TO_FOREGROUND` with `ACTIVITY_PAUSED/MOVE_TO_BACKGROUND` per package, and return
    `{package: {"yyyy-MM-dd": [24 ints of seconds]}}`.
 4. Resolve package → display name with `InstalledApps.getInstalledApps(true, true)`. This is called **once per
-   day in the loop** and is slow. Apps that aren't installed any more are dropped. Check the package's
-   signature: if the arguments are `(excludeSystemApps, withIcon)`, as the reviewer recalls for 1.6.0 (not
-   verified locally), then preinstalled system apps (often Chrome, YouTube, Gmail) are silently dropped too,
-   and loading icons is what makes it slow.
+   day in the loop** and is slow. Apps that aren't installed any more are dropped. In installed_apps 1.6.0
+   the signature is `getInstalledApps([excludeSystemApps = true, withIcon = false, ...])`, so `(true, true)`
+   also **silently drops preinstalled system apps** (often Chrome, YouTube, Gmail) and loads every icon, which
+   is what makes it slow.
 5. Category comes from `_getCategoryFromAppName`, which only knows `instagram→Social` and `chrome→Browser`.
    Everything else is `Uncategorized`.
 6. `PUT /api/appUsage/bulk` with `ApplicationDailyUsage[]`, then `GET /api/appUsage/findPossibleHabits`.
