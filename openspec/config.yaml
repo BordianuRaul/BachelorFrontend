@@ -19,9 +19,18 @@ rules:
     - Always state what is out of scope
     - A change that depends on a backend contract links the backend change or PR
   specs:
-    - Every requirement has at least one scenario; each scenario is covered by a test or marked "(manual: <reason>)"
+    - 'Every requirement has at least one scenario; each scenario is covered by a test or marked "(manual: <reason>)"'
   design:
     - Name at least one rejected alternative and why it lost
   tasks:
     - The whole tasks.md must fit one PR within the code budget; if it can't, stop and propose a split to Raul
-    - Every spec scenario maps to a test task, or says why it is verified manually (e.g. needs a device)
+    - 'Every spec scenario maps to a test task or is marked "(manual: <reason>)", e.g. it needs a device'
+
+operations:
+  apply:
+    guidance:
+      - Run openspec validate on the change before the adversarial review
+  archive:
+    guidance:
+      - Write review.md (the adversarial review record) into the change before archiving
+      - Archive before opening the PR, never after
